@@ -11,16 +11,19 @@ public class Stack<T> {
         }
     }
 
-    Node top;
+    private Node top;
+    private int size;
 
     public Stack() {
         top = null;
+        size = 0;
     }
 
     public void push(T data) {
         Node newTop = new Node(data);
         newTop.next = top;
         top = newTop;
+        size++;
     }
 
     public T pop() {
@@ -28,7 +31,8 @@ public class Stack<T> {
             throw new NoSuchElementException("Stack is empty");
         }
         T oldTop = top.data;
-        top.next = top;
+        top = top.next;
+        size--;
         return oldTop;
     }
 
@@ -40,19 +44,42 @@ public class Stack<T> {
     }
 
     public boolean isEmpty() {
-        return top == null;
+        return size == 0;
     }
 
     public int getLength() {
+        return size;
+    }
+
+    public void printStack() {
         if(top == null) {
-            return 0;
+            throw new NoSuchElementException("Stack is empty");
         }
         Node curNode = top;
-        int counter = 1;
-        while(curNode != null) {
+        System.out.printf("Top -> [%s] -> ", curNode.data);
+        while(curNode.next.next != null) {
             curNode = curNode.next;
-            counter++;
+            System.out.printf("[%s] -> ", curNode.data);
         }
-        return counter;
+        curNode = curNode.next;
+        System.out.printf("[%s] <- Tail\n", curNode.data);
     }
+
+    @Override
+    public String toString() {
+        return "This stack contains " + size + " elements.\n";
+    }
+
+    // public int getLength() {
+    //     if(top == null) {
+    //         return 0;
+    //     }
+    //     Node curNode = top;
+    //     int counter = 1;
+    //     while(curNode != null) {
+    //         curNode = curNode.next;
+    //         counter++;
+    //     }
+    //     return counter;
+    // }
 }
